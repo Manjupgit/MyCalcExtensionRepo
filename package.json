@@ -1,0 +1,25 @@
+{
+  "name": "mycalc-extension",
+  "version": "1.0.0",
+  "description": "A simple calculator GitHub Copilot Extension",
+  "type": "module",
+  "main": "dist/MyCalcExtension.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/MyCalcExtension.js",
+    "dev": "ts-node --esm MyCalcExtension.ts",
+    "postinstall": "npm run build"
+  },
+  "dependencies": {
+    "@copilot-extensions/preview-sdk": "^5.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^18.0.0",
+    "ts-node": "^10.9.0"
+  }
+}
