@@ -31,6 +31,17 @@ async function handleCopilotRequest(req: IncomingMessage, res: ServerResponse) {
     return;
   }
 
+  // Handle CORS for preflight requests
+  if (req.method === "OPTIONS") {
+    res.writeHead(200, {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, x-github-public-key-identifier, x-hub-signature-256"
+    });
+    res.end();
+    return;
+  }
+
   if (req.method !== "POST") {
     res.writeHead(405, { "Content-Type": "text/plain" });
     res.end("Method Not Allowed");
