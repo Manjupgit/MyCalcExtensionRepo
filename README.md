@@ -1,3 +1,4 @@
+# MyCalcExtensionRepo
 # Calculator Copilot Extension
 
 A GitHub Copilot Extension that performs mathematical calculations.
