@@ -56,7 +56,8 @@ async function handleCopilotRequest(req: IncomingMessage, res: ServerResponse) {
   req.on("end", async () => {
     try {
       console.log("All headers:", req.headers);
-      const signature = req.headers["x-hub-signature-256"] as string;
+      // Use the correct header for signature verification
+      const signature = req.headers["x-github-public-key-signature"] as string;
       const keyId = req.headers["x-github-public-key-identifier"] as string;
       console.log("Received headers:", { signature, keyId });
       console.log("Raw body:", body);
