@@ -18,7 +18,7 @@ function calculate(expression: string): string {
     const result = eval(sanitized);
     return result.toString();
   } catch {
-    return "Invalid expression";
+    return "Invalid input expression";
   }
 }
 
@@ -57,12 +57,8 @@ async function handleCopilotRequest(req: IncomingMessage, res: ServerResponse) {
     try {
       const signature = req.headers["x-hub-signature-256"] as string;
       const keyId = req.headers["x-github-public-key-identifier"] as string;
-
-      if (!signature || !keyId) {
-        res.writeHead(401, { "Content-Type": "text/plain" });
-        res.end("Missing signature or key ID");
-        return;
-      }
+      console.log("Received headers:", { signature, keyId });
+      console.log("Raw body:", body);
 
       // Verify and parse the request
       const { isValidRequest, payload } = await verifyAndParseRequest(
@@ -70,8 +66,11 @@ async function handleCopilotRequest(req: IncomingMessage, res: ServerResponse) {
         signature,
         keyId
       );
+      console.log("Verification result:", isValidRequest);
+      console.log("Parsed payload:", payload);
 
       if (!isValidRequest) {
+        console.error("Signature verification failed");
         res.writeHead(401, { "Content-Type": "text/plain" });
         res.end("Invalid signature");
         return;
@@ -79,6 +78,7 @@ async function handleCopilotRequest(req: IncomingMessage, res: ServerResponse) {
 
       // Get the user's message
       const userMessage = getUserMessage(payload);
+      console.log("User message:", userMessage);
       
       if (!userMessage) {
         res.writeHead(200, { "Content-Type": "text/plain" });
@@ -90,6 +90,7 @@ async function handleCopilotRequest(req: IncomingMessage, res: ServerResponse) {
 
       // Calculate the result
       const result = calculate(userMessage);
+      console.log(`Calculation: ${userMessage} = ${result}`);
 
       // Send the response
       res.writeHead(200, { "Content-Type": "text/plain" });
